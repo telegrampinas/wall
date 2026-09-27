@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#517da2">
+<title>Luzon Hub</title>
+<style>
+:root{--bg:#fff;--bg2:#f1f2f4;--text:#101114;--muted:#707579;--line:#ececee;--accent:#3390ec;--head:#517da2;--card:#fff;--shadow:0 1px 2px rgba(16,17,20,.06),0 6px 18px rgba(16,17,20,.06)}
+@media (prefers-color-scheme:dark){:root{--bg:#1c1c1e;--bg2:#0e0e10;--text:#f5f5f7;--muted:#9a9ba0;--line:#2c2c2f;--accent:#5aa2f0;--head:#232e3c;--card:#26272b;--shadow:none}}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html,body{background:var(--bg2)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+#app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg);position:relative}
+@media(min-width:481px){#app{box-shadow:0 0 0 1px var(--line)}}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:5;height:56px;display:flex;align-items:center;gap:10px;padding:0 10px 0 6px;background:var(--head);color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.ib{width:42px;height:42px;border:0;background:none;color:#fff;border-radius:50%;display:grid;place-items:center;cursor:pointer;flex-shrink:0}
+.ib:active{background:rgba(255,255,255,.15)}
+.tt{flex:1;min-width:0}
+.tt b{display:block;font-size:17px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tt small{display:block;font-size:13px;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vip{position:relative;overflow:hidden;flex-shrink:0;display:inline-flex;align-items:center;gap:4px;padding:6px 11px;border-radius:15px;font-size:12.5px;font-weight:800;letter-spacing:.5px;color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.25);box-shadow:0 2px 8px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.35)}
+.vip.shine:after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);animation:shine 2.6s infinite}
+@keyframes shine{0%{left:-60%}60%,100%{left:130%}}
+
+/* login */
+.login{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;text-align:center}
+.login>*{width:100%;max-width:360px}
+.logo{width:120px!important;height:120px;border-radius:50%;display:grid;place-items:center;margin-bottom:26px;background:linear-gradient(135deg,#2f9bf0,#3a6fe0 55%,#6a5ae0);box-shadow:0 12px 32px rgba(51,110,224,.35)}
+.login h1{font-size:26px;font-weight:700}
+.login p{color:var(--muted);margin:8px 0 28px;font-size:15px;line-height:1.45}
+.field{position:relative;margin-bottom:12px}
+.field input{width:100%;height:54px;border:1px solid var(--line);border-radius:12px;padding:0 16px;font-size:16px;background:var(--bg);outline:none;transition:border-color .15s}
+.field input.pre{padding-left:34px}
+.field .at{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:16px}
+.num:focus,.form input:focus,.field input:focus{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.err{color:#e53935;font-size:14px;min-height:20px;margin:2px 0 8px}
+.btn{width:100%;height:52px;border:0;border-radius:12px;background:var(--accent);color:#fff;font-size:15px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;transition:filter .15s}
+.btn:active{filter:brightness(.92)}
+.btn:disabled{opacity:.6}
+.hint{margin-top:22px;padding:11px 14px;border-radius:12px;background:var(--bg2);font-size:13px;color:var(--muted);line-height:1.45}
+
+/* home */
+.hero{margin:14px 12px 10px;padding:18px 18px 20px;border-radius:20px;color:#fff;background:linear-gradient(135deg,#2f9bf0 0%,#3a6fe0 55%,#6a5ae0 100%);position:relative;overflow:hidden;box-shadow:0 8px 24px rgba(51,110,224,.3)}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.1)}
+.hero:before{width:180px;height:180px;right:-50px;top:-70px}
+.hero:after{width:110px;height:110px;right:40px;bottom:-60px}
+.hl{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:500;opacity:.95}
+.hn{display:inline-block;font-size:44px;font-weight:800;letter-spacing:-1px;margin-top:6px;font-variant-numeric:tabular-nums;transform-origin:left center}
+.hn.bump{animation:bump .7s ease}
+@keyframes bump{35%{transform:scale(1.07);text-shadow:0 0 20px rgba(255,255,255,.7)}}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 12px}
+.stat{background:var(--bg2);border-radius:14px;padding:11px 6px;text-align:center}
+.stat b{display:block;font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+.stat span{font-size:11.5px;color:var(--muted)}
+.sec{padding:18px 16px 4px;font-size:14.5px;font-weight:600;color:var(--accent)}
+.row{display:flex;align-items:center;gap:12px;padding:0 12px;cursor:pointer;transition:background .15s}
+@media(hover:hover){.row:hover{background:var(--bg2)}}
+.row:active{background:var(--bg2)}
+.urow{cursor:default}
+.row>.ava{margin:8px 0}
+.ava{width:54px;height:54px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;color:#fff;font-weight:700;font-size:15px;letter-spacing:.3px;text-shadow:0 1px 1px rgba(0,0,0,.15)}
+.rb{flex:1;min-width:0;align-self:stretch;display:flex;flex-direction:column;justify-content:center;border-bottom:1px solid var(--line);padding:10px 0}
+.row:last-child .rb{border-bottom:0}
+.rt{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.rt b{font-size:16px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tag{font-size:12.5px;color:var(--muted);flex-shrink:0}
+.rs{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;font-size:14.5px;color:var(--muted)}
+.badge{flex-shrink:0;display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;border-radius:11px;background:var(--accent);color:#fff;font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums}
+.foot{padding:18px 16px 32px;text-align:center;font-size:13px;color:var(--muted)}
+
+/* region page */
+.slide{animation:sin .25s cubic-bezier(.2,.8,.2,1)}
+@keyframes sin{from{transform:translateX(24px);opacity:0}}
+.chat{min-height:calc(100vh - 56px);padding:12px 12px 28px;background:var(--bg2);background-image:radial-gradient(rgba(51,144,236,.1) 1px,transparent 1px);background-size:18px 18px}
+.pill{display:table;margin:2px auto 14px;padding:5px 12px;border-radius:14px;background:rgba(0,0,0,.3);color:#fff;font-size:13px;font-weight:500}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.box{position:relative;overflow:hidden;background:var(--card);border-radius:16px;padding:14px 14px 13px 18px;box-shadow:var(--shadow);animation:pop .35s both}
+.box:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--rc)}
+.bn{font-weight:600;font-size:15px;line-height:1.25;min-height:38px}
+.bv{font-size:28px;font-weight:800;letter-spacing:-.5px;margin-top:4px;font-variant-numeric:tabular-nums}
+.bl{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--muted);margin-top:2px}
+.bl svg{color:var(--rc)}
+@keyframes pop{from{transform:translateY(8px);opacity:0}}
+
+/* drawer */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20;animation:fade .2s}
+.drawer{position:fixed;top:0;bottom:0;left:max(0px,calc(50vw - 240px));width:min(290px,82vw);background:var(--bg);z-index:21;animation:din .22s ease;box-shadow:4px 0 24px rgba(0,0,0,.2)}
+@keyframes fade{from{opacity:0}}
+@keyframes din{from{transform:translateX(-100%)}}
+.dh{background:var(--head);color:#fff;padding:24px 18px 18px}
+.dh .ava{margin-bottom:14px}
+.dn{font-weight:600;font-size:16px;margin-bottom:10px}
+.di{width:100%;display:flex;align-items:center;gap:22px;padding:15px 20px;border:0;background:none;cursor:pointer;font-size:15px;text-align:left}
+.di:active{background:var(--bg2)}
+.di svg{color:var(--muted)}
+
+/* admin */
+.tabs{position:sticky;top:56px;z-index:4;display:flex;background:var(--head)}
+.tab{flex:1;height:46px;border:0;background:none;color:rgba(255,255,255,.65);font-weight:600;font-size:14.5px;cursor:pointer;border-bottom:3px solid transparent}
+.tab.on{color:#fff;border-bottom-color:#fff}
+.pane{padding-bottom:100px}
+.search{padding:10px 12px 4px}
+.search input{width:100%;height:40px;border:0;border-radius:20px;padding:0 16px;background:var(--bg2);outline:none;font-size:15px}
+.selw{position:relative;flex-shrink:0}
+.selw:after{content:"";position:absolute;right:10px;top:50%;margin-top:-2px;border:4px solid transparent;border-top-color:#fff;pointer-events:none}
+.sel{appearance:none;-webkit-appearance:none;border:0;border-radius:14px;height:28px;padding:0 24px 0 12px;color:#fff;font-weight:800;font-size:12.5px;letter-spacing:.4px;cursor:pointer;outline:none;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.sel option{color:#000;background:#fff}
+.lead{padding:12px 16px 4px;font-size:13.5px;color:var(--muted)}
+details.reg{border-bottom:1px solid var(--line)}
+details.reg summary{list-style:none;display:flex;align-items:center;gap:12px;padding:10px 12px;cursor:pointer}
+details.reg summary::-webkit-details-marker{display:none}
+.sb{flex:1;min-width:0}
+.sb b{display:block;font-size:15.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb small{color:var(--muted);font-size:13.5px}
+.caret{color:var(--muted);display:grid;transition:transform .2s}
+details[open] .caret{transform:rotate(90deg)}
+.prow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 16px 6px 68px}
+.prow:last-child{padding-bottom:14px}
+.prow span{font-size:15px}
+.num{width:112px;height:40px;border:1px solid var(--line);border-radius:10px;padding:0 12px;text-align:right;font-size:15px;background:var(--bg);outline:none;font-variant-numeric:tabular-nums}
+.form{padding:6px 16px}
+.form label{display:block;margin:18px 0 7px;font-size:13.5px;font-weight:600;color:var(--accent)}
+.form input{width:100%;height:48px;border:1px solid var(--line);border-radius:12px;padding:0 14px;font-size:16px;background:var(--bg);outline:none}
+.inrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.help{margin-top:7px;font-size:13px;color:var(--muted)}
+.note{margin-top:22px;padding:12px 14px;border-radius:12px;background:var(--bg2);font-size:13.5px;color:var(--muted);line-height:1.45}
+.savebar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;padding:14px 12px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 65%,transparent);z-index:6}
+.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);z-index:30;background:rgba(20,20,22,.9);color:#fff;padding:10px 18px;border-radius:20px;font-size:14px;animation:fade .2s;white-space:nowrap}
+.empty{padding:48px 24px;text-align:center;color:var(--muted);line-height:1.5}
+.loading{min-height:100vh;display:grid;place-items:center}
+.spin{width:36px;height:36px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--accent);animation:rot .8s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* Opened on its own this runs in PREVIEW mode with demo data.
+   Served by server.js as public/index.html it uses the live API. */
+
+const REGIONS=[
+ {id:'ncr',code:'NCR',tag:'Metro Manila',name:'National Capital Region',color:'#e17076',items:['Caloocan','Las Piñas','Makati','Malabon','Mandaluyong','Manila','Marikina','Muntinlupa','Navotas','Parañaque','Pasay','Pasig','Pateros','Quezon City','San Juan','Taguig','Valenzuela']},
+ {id:'car',code:'CAR',tag:'CAR',name:'Cordillera Administrative Region',color:'#7bc862',items:['Abra','Apayao','Benguet','Ifugao','Kalinga','Mountain Province']},
+ {id:'r1',code:'I',tag:'Region I',name:'Ilocos Region',color:'#e5ca77',items:['Ilocos Norte','Ilocos Sur','La Union','Pangasinan']},
+ {id:'r2',code:'II',tag:'Region II',name:'Cagayan Valley',color:'#65aadd',items:['Batanes','Cagayan','Isabela','Nueva Vizcaya','Quirino']},
+ {id:'r3',code:'III',tag:'Region III',name:'Central Luzon',color:'#a695e7',items:['Aurora','Bataan','Bulacan','Nueva Ecija','Pampanga','Tarlac','Zambales']},
+ {id:'r4a',code:'IV-A',tag:'Region IV-A',name:'CALABARZON',color:'#ee7aae',items:['Batangas','Cavite','Laguna','Quezon','Rizal']},
+ {id:'r4b',code:'IV-B',tag:'Region IV-B',name:'MIMAROPA',color:'#6ec9cb',items:['Marinduque','Occidental Mindoro','Oriental Mindoro','Palawan','Romblon']},
+ {id:'r5',code:'V',tag:'Region V',name:'Bicol Region',color:'#faa774',items:['Albay','Camarines Norte','Camarines Sur','Catanduanes','Masbate','Sorsogon']}
+];
+const PALETTE=['#e17076','#7bc862','#e5ca77','#65aadd','#a695e7','#ee7aae','#6ec9cb','#faa774'];
+const VIP=[['#8b939b','#b9c0c7'],['#a0612d','#d99a5e'],['#7d8a97','#c9d3dc'],['#c7910c','#f5cf4f'],['#12916a','#45d19c'],['#2257e0','#5ea8ff'],['#7a2fe0','#ee6ff0']];
+const DEMO_PASS='admin123';
+const NAME_ERR='Username must be 3–32 letters, numbers, _ or .';
+
+const I={
+ menu:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
+ back:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>',
+ crown:'<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 7.5l5 4 4.5-7 4.5 7 5-4-2 11h-15z"/></svg>',
+ check:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M7.5 12.5l3 3 6-6.5"/></svg>',
+ people:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.6a3.5 3.5 0 010 6.8M18.2 14.3c2 .8 3.3 2.8 3.3 5.7"/></svg>',
+ pin:'<svg width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.5s-7-6.1-7-11.8a7 7 0 0114 0c0 5.7-7 11.8-7 11.8z"/><circle cx="12" cy="9.7" r="2.7"/></svg>',
+ logout:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H6a2 2 0 00-2 2v12a2 2 0 002 2h3M16 16l4-4-4-4M20 12H10"/></svg>',
+ caret:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>'
+};
+
+/* helpers */
+const app=document.getElementById('app');
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=n=>Number(n).toLocaleString('en-US');
+const hash=s=>{let h=0;for(const c of s)h=(h*31+c.codePointAt(0))>>>0;return h};
+const defEmp=p=>25+hash(p)%176;
+const colorFor=s=>PALETTE[hash(s)%PALETTE.length];
+const clone=o=>JSON.parse(JSON.stringify(o));
+const int=(v,min,max,d)=>{v=Math.floor(Number(v));return Number.isFinite(v)?Math.min(max,Math.max(min,v)):d};
+const txNow=(s,now)=>s.txBase+Math.max(0,Math.floor((now-s.txBaseTime)/(s.txInterval*60000)))*s.txStep;
+const unit=r=>r.id==='ncr'?'LGUs':'provinces';
+
+/* shared save logic (same as server.js) */
+function applySave(db,b){
+  const s=db.settings;
+  if(b.settings){
+    const name=String(b.settings.appName||'').trim().slice(0,40);if(name)s.appName=name;
+    const cur=txNow(s,Date.now()),iv=int(b.settings.txInterval,1,1440,s.txInterval),st=int(b.settings.txStep,1,100000,s.txStep),to=int(b.settings.txSetTo,0,1e12,cur);
+    if(to!==cur||iv!==s.txInterval||st!==s.txStep)Object.assign(s,{txBase:to,txBaseTime:Date.now(),txInterval:iv,txStep:st});
+  }
+  for(const[k,v]of Object.entries(b.employees||{}))if(k.length<=60)db.employees[k]=int(v,0,1e9,0);
+  for(const[k,v]of Object.entries(b.users||{}))if(db.users[k])db.users[k].vip=int(v,0,6,0);
+}
+
+/* preview backend (in memory) */
+const t0=Date.now();
+const Local={
+  db:{settings:{appName:'Luzon Hub',txBase:343,txBaseTime:t0,txInterval:5,txStep:1},employees:{},
+      users:{juan_dc:{vip:2,joined:t0-3*864e5},'maria.santos':{vip:0,joined:t0-864e5},kiko23:{vip:5,joined:t0-7*864e5}}},
+  pub(u){return clone({settings:this.db.settings,employees:this.db.employees,user:u?{username:u,...this.db.users[u]}:null,now:Date.now()})},
+  adm(){return{...this.pub(null),users:clone(this.db.users)}},
+  async login(u){u=String(u||'').trim().toLowerCase().replace(/^@/,'');if(!/^[a-z0-9_.]{3,32}$/.test(u)||u==='admin')throw new Error(NAME_ERR);if(!this.db.users[u])this.db.users[u]={vip:0,joined:Date.now()};return this.pub(u)},
+  async state(u){return this.pub(this.db.users[u]?u:null)},
+  async adminLogin(k){if(k!==DEMO_PASS)throw new Error('Wrong admin password');return this.adm()},
+  async adminSave(k,b){if(k!==DEMO_PASS)throw new Error('Wrong admin password');applySave(this.db,b);return this.adm()}
+};
+
+/* live backend (server.js) */
+async function call(method,url,body,key){
+  const h={'Content-Type':'application/json'};if(key)h['x-admin-key']=key;
+  const r=await fetch(url,{method,headers:h,body:body?JSON.stringify(body):undefined});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(j.error||'Request failed');
+  return j;
+}
+const Remote={
+  login:u=>call('POST','/api/login',{username:u}),
+  state:u=>call('GET','/api/state?u='+encodeURIComponent(u||'')),
+  adminLogin:k=>call('POST','/api/admin/login',null,k),
+  adminSave:(k,b)=>call('POST','/api/admin/save',b,k)
+};
+async function detect(){
+  try{
+    const c=new AbortController(),t=setTimeout(()=>c.abort(),3500);
+    const r=await fetch('/api/state',{signal:c.signal});clearTimeout(t);
+    const j=await r.json();if(j&&j.settings)return Remote;
+  }catch(e){}
+  return Local;
+}
+
+/* state */
+const S={mode:'local',data:null,offset:0,user:null,view:'boot',region:null,adminKey:null,admin:null,draft:null,tab:'users',q:'',open:{}};
+let api=Local,lastTx=null;
+const setData=d=>{S.data=d;S.offset=(d.now||Date.now())-Date.now()};
+const txCount=()=>txNow(S.data.settings,Date.now()+S.offset);
+const emp=p=>{const v=S.data.employees[p];return v==null?defEmp(p):v};
+const regionTotal=r=>r.items.reduce((a,p)=>a+Number(emp(p)),0);
+const draftEmp=p=>S.draft.employees[p]??emp(p);
+const draftTotal=r=>r.items.reduce((a,p)=>a+(Number(draftEmp(p))||0),0);
+
+/* pieces */
+const vipBadge=v=>{const[a,b]=VIP[v]||VIP[0];return`<div class="vip${v>=3?' shine':''}" style="background:linear-gradient(135deg,${a},${b})">${I.crown}VIP ${v}</div>`};
+const ava=(r,sz)=>`<div class="ava" style="background:linear-gradient(160deg,${r.color}b3,${r.color});${sz?`width:${sz}px;height:${sz}px;font-size:${Math.round(sz*.29)}px`:''}">${r.code}</div>`;
+const uava=(n,sz)=>{const c=colorFor(n);return`<div class="ava" style="background:linear-gradient(160deg,${c}b3,${c});width:${sz}px;height:${sz}px;font-size:${Math.round(sz*.4)}px">${esc(n[0].toUpperCase())}</div>`};
+
+/* views */
+function renderLogin(err){
+  S.view='login';
+  const name=S.data?S.data.settings.appName:'Luzon Hub';
+  app.innerHTML=`<form class="login" id="lf" autocomplete="off">
+    <div class="logo">${I.pin}</div>
+    <h1>${esc(name)}</h1>
+    <p>Type your username to continue.<br>No account needed.</p>
+    <div class="field"><span class="at">@</span><input id="uname" class="pre" placeholder="Username" maxlength="33" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="go"></div>
+    <div class="field" id="pwf" hidden><input id="pw" type="password" placeholder="Admin password" enterkeyhint="go"></div>
+    <div class="err" id="err">${esc(err||'')}</div>
+    <button class="btn" id="go" type="submit">Continue</button>
+    ${S.mode==='local'?'<div class="hint"><b>Preview mode</b> · use any username, or <b>admin</b> / <b>admin123</b> to open the admin panel.</div>':''}
+  </form>`;
+}
+
+function renderHome(){
+  S.view='home';
+  const u=S.user,total=REGIONS.reduce((a,r)=>a+regionTotal(r),0),provs=REGIONS.reduce((a,r)=>a+r.items.length,0);
+  app.innerHTML=`<header class="bar">
+    <button class="ib" data-act="menu" aria-label="Menu">${I.menu}</button>
+    <div class="tt"><b>${esc(S.data.settings.appName)}</b><small>@${esc(u.username)}</small></div>
+    ${vipBadge(u.vip)}
+  </header>
+  <div class="hero"><div class="hl">${I.check} Successful transactions</div><div class="hn" id="tx">${fmt(txCount())}</div></div>
+  <div class="stats">
+    <div class="stat"><b>${REGIONS.length}</b><span>Regions</span></div>
+    <div class="stat"><b>${provs}</b><span>Provinces</span></div>
+    <div class="stat"><b>${fmt(total)}</b><span>Employees</span></div>
+  </div>
+  <div class="sec">Regions of Luzon</div>
+  <div>${REGIONS.map(r=>`<div class="row" data-act="region" data-id="${r.id}">
+    ${ava(r)}
+    <div class="rb">
+      <div class="rt"><b>${r.name}</b><span class="tag">${r.tag}</span></div>
+      <div class="rs"><span>${r.items.length} ${unit(r)}</span><span class="badge">${I.people}${fmt(regionTotal(r))}</span></div>
+    </div></div>`).join('')}</div>
+  <div class="foot">Tap a region to see its provinces</div>`;
+  lastTx=txCount();
+}
+
+function renderRegion(id,quiet){
+  S.view='region';S.region=id;
+  const r=REGIONS.find(x=>x.id===id);
+  app.innerHTML=`<div class="${quiet?'':'slide'}">
+  <header class="bar">
+    <button class="ib" data-act="home" aria-label="Back">${I.back}</button>
+    ${ava(r,40)}
+    <div class="tt"><b>${r.name}</b><small>${r.tag} · ${r.items.length} ${unit(r)}</small></div>
+    ${vipBadge(S.user.vip)}
+  </header>
+  <div class="chat">
+    <div class="pill">${fmt(regionTotal(r))} employees in ${r.items.length} ${unit(r)}</div>
+    <div class="grid">${r.items.map((p,i)=>`<div class="box" style="--rc:${r.color};animation-delay:${quiet?0:i*25}ms">
+      <div class="bn">${p}</div><div class="bv">${fmt(emp(p))}</div><div class="bl">${I.people} employees</div></div>`).join('')}</div>
+  </div></div>`;
+  if(!quiet)window.scrollTo(0,0);
+}
+
+function openMenu(){
+  const u=S.user,el=document.createElement('div');el.id='menu';
+  el.innerHTML=`<div class="ov" data-act="closemenu"></div>
+  <aside class="drawer"><div class="dh">${uava(u.username,64)}<div class="dn">@${esc(u.username)}</div>${vipBadge(u.vip)}</div>
+  <button class="di" data-act="logout">${I.logout} Log out</button></aside>`;
+  document.body.appendChild(el);
+}
+const closeMenu=()=>{const m=$('#menu');if(m)m.remove()};
+
+/* admin */
+function loadAdmin(d){S.admin=d;setData(d);S.draft={users:{},employees:{},settings:{}}}
+
+function renderAdmin(){
+  S.view='admin';
+  const n=Object.keys(S.admin.users).length;
+  app.innerHTML=`<header class="bar">
+    <div class="ava" style="width:40px;height:40px;font-size:16px;margin-left:6px;background:linear-gradient(160deg,#faa774,#e17076)">A</div>
+    <div class="tt"><b>Admin panel</b><small>${esc(S.admin.settings.appName)} · ${S.mode==='local'?'preview':'live'}</small></div>
+    <button class="ib" data-act="logout" aria-label="Log out">${I.logout}</button>
+  </header>
+  <nav class="tabs">${[['users',`Users (${n})`],['employees','Employees'],['settings','Settings']].map(([k,l])=>`<button class="tab${S.tab===k?' on':''}" data-act="tab" data-id="${k}">${l}</button>`).join('')}</nav>
+  <div class="pane">${S.tab==='users'?paneUsers():S.tab==='employees'?paneEmp():paneSet()}</div>
+  <div class="savebar"><button class="btn" data-act="save" id="saveBtn">Save changes</button></div>`;
+}
+
+function paneUsers(){
+  return`<div class="search"><input id="q" placeholder="Search username" value="${esc(S.q)}"></div><div id="ulist">${userList()}</div>`;
+}
+function userList(){
+  const q=S.q.trim().toLowerCase().replace(/^@/,'');
+  const list=Object.entries(S.admin.users).filter(([n])=>n.includes(q)).sort((a,b)=>b[1].joined-a[1].joined);
+  if(!list.length)return`<div class="empty">${q?'No match.':'No users yet.<br>Users appear here after they log in with a username.'}</div>`;
+  return list.map(([n,u])=>{const v=S.draft.users[n]??u.vip,[a,b]=VIP[v];
+    return`<div class="row urow">${uava(n,48)}<div class="rb">
+      <div class="rt"><b>@${esc(n)}</b><span class="selw"><select class="sel" data-user="${esc(n)}" style="background:linear-gradient(135deg,${a},${b})">${VIP.map((_,i)=>`<option value="${i}"${i==v?' selected':''}>VIP ${i}</option>`).join('')}</select></span></div>
+      <div class="rs"><span>Joined ${new Date(u.joined).toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'})}</span></div>
+    </div></div>`}).join('');
+}
+function paneEmp(){
+  return`<div class="lead">Open a region and edit the number of employees per province.</div>`+REGIONS.map(r=>`<details class="reg" data-reg="${r.id}"${S.open[r.id]?' open':''}>
+    <summary>${ava(r,44)}<div class="sb"><b>${r.name}</b><small>${r.tag} · ${r.items.length} ${unit(r)}</small></div>
+    <span class="badge">${I.people}<span id="tot-${r.id}">${fmt(draftTotal(r))}</span></span><span class="caret">${I.caret}</span></summary>
+    ${r.items.map(p=>`<div class="prow"><span>${p}</span><input class="num" type="number" min="0" inputmode="numeric" data-prov="${p}" data-r="${r.id}" value="${esc(draftEmp(p))}"></div>`).join('')}
+  </details>`).join('');
+}
+function paneSet(){
+  const s=S.admin.settings,d=S.draft.settings;
+  return`<div class="form">
+    <label>App name</label><input data-set="appName" maxlength="40" value="${esc(d.appName??s.appName)}">
+    <label>Successful transactions</label><input id="txIn" data-set="txSetTo" type="number" min="0" inputmode="numeric" value="${esc(d.txSetTo??txCount())}">
+    <div class="help" id="txHelp"></div>
+    <div class="inrow">
+      <div><label>Auto-add every (min)</label><input data-set="txInterval" type="number" min="1" inputmode="numeric" value="${esc(d.txInterval??s.txInterval)}"></div>
+      <div><label>Amount each time</label><input data-set="txStep" type="number" min="1" inputmode="numeric" value="${esc(d.txStep??s.txStep)}"></div>
+    </div>
+    <div class="note">${S.mode==='local'?'Preview mode: changes last until this page reloads. Once deployed, they are saved on the server.':'The admin password is the ADMIN_PASSWORD variable in Railway.'}</div>
+  </div>`;
+}
+
+async function save(){
+  const b=$('#saveBtn'),s=S.admin.settings,D=S.draft.settings;
+  b.disabled=true;b.textContent='Saving…';
+  const body={users:S.draft.users,employees:S.draft.employees,settings:{appName:D.appName??s.appName,txInterval:D.txInterval||s.txInterval,txStep:D.txStep||s.txStep}};
+  if(D.txSetTo!==undefined&&D.txSetTo!=='')body.settings.txSetTo=Number(D.txSetTo);
+  try{loadAdmin(await api.adminSave(S.adminKey,body));renderAdmin();toast('Changes saved')}
+  catch(e){b.disabled=false;b.textContent='Save changes';toast(e.message)}
+}
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),1800)}
+
+function logout(){closeMenu();Object.assign(S,{user:null,adminKey:null,admin:null,draft:null,q:''});renderLogin()}
+
+/* events */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-act]');if(!t)return;
+  const a=t.dataset.act;
+  if(a==='region')renderRegion(t.dataset.id);
+  else if(a==='home')renderHome();
+  else if(a==='menu')openMenu();
+  else if(a==='closemenu')closeMenu();
+  else if(a==='logout')logout();
+  else if(a==='tab'){S.tab=t.dataset.id;renderAdmin()}
+  else if(a==='save')save();
+});
+document.addEventListener('input',e=>{
+  const t=e.target;
+  if(t.id==='uname')$('#pwf').hidden=t.value.trim().toLowerCase().replace(/^@/,'')!=='admin';
+  else if(t.id==='q'){S.q=t.value;$('#ulist').innerHTML=userList()}
+  else if(t.dataset.prov){S.draft.employees[t.dataset.prov]=t.value;const r=REGIONS.find(x=>x.id===t.dataset.r);$('#tot-'+r.id).textContent=fmt(draftTotal(r))}
+  else if(t.dataset.set)S.draft.settings[t.dataset.set]=t.value;
+});
+document.addEventListener('change',e=>{
+  const t=e.target;if(!t.matches('select[data-user]'))return;
+  const v=+t.value,[a,b]=VIP[v];S.draft.users[t.dataset.user]=v;t.style.background=`linear-gradient(135deg,${a},${b})`;
+});
+document.addEventListener('toggle',e=>{const d=e.target;if(d.dataset&&d.dataset.reg)S.open[d.dataset.reg]=d.open},true);
+document.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const u=$('#uname').value.trim().toLowerCase().replace(/^@/,''),pw=$('#pw').value,go=$('#go'),err=$('#err');
+  if(!u){err.textContent='Please type a username';return}
+  if(u==='admin'&&!pw){$('#pwf').hidden=false;$('#pw').focus();return}
+  err.textContent='';go.disabled=true;go.textContent='Please wait…';
+  try{
+    if(u==='admin'){const d=await api.adminLogin(pw);S.adminKey=pw;loadAdmin(d);S.tab='users';renderAdmin()}
+    else{const d=await api.login(u);setData(d);S.user=d.user;renderHome()}
+  }catch(x){err.textContent=x.message;go.disabled=false;go.textContent='Continue'}
+});
+
+/* every second: transaction counter */
+setInterval(()=>{
+  if(!S.data)return;
+  const n=txCount(),el=$('#tx');
+  if(el&&lastTx!==null&&n!==lastTx){el.textContent=fmt(n);el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump')}
+  lastTx=n;
+  const ti=$('#txIn');if(ti&&S.draft&&S.draft.settings.txSetTo===undefined&&document.activeElement!==ti)ti.value=n;
+  const th=$('#txHelp');
+  if(th){const s=S.data.settings,per=s.txInterval*60000,rem=per-((Date.now()+S.offset-s.txBaseTime)%per);
+    th.textContent=`Adds +${fmt(s.txStep)} every ${s.txInterval} min · next in ${Math.floor(rem/60000)}:${String(Math.floor(rem/1000)%60).padStart(2,'0')}`}
+},1000);
+
+/* every 15s: pick up admin changes (VIP, employees, settings) */
+setInterval(async()=>{
+  if(!S.user||(S.view!=='home'&&S.view!=='region'))return;
+  try{
+    const name=S.user.username;let d=await api.state(name);
+    if(!d.user)d=await api.login(name);
+    if(!S.user)return;
+    const sig=x=>JSON.stringify([x.settings,x.employees,x.user&&x.user.vip]);
+    const changed=sig(d)!==sig({settings:S.data.settings,employees:S.data.employees,user:S.user});
+    setData(d);S.user=d.user;
+    if(changed&&!$('#menu'))S.view==='home'?renderHome():renderRegion(S.region,true);
+  }catch(e){}
+},15000);
+
+(async()=>{
+  app.innerHTML='<div class="loading"><div class="spin"></div></div>';
+  api=await detect();S.mode=api===Remote?'live':'local';
+  try{setData(await api.state(''))}catch(e){}
+  renderLogin();
+})();
+</script>
+</body>
+</html>
